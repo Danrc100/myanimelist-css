@@ -2,27 +2,26 @@ name: Atualizar Capas do Malscraper
 
 on:
   schedule:
-    - cron: '0 3 * * *' 
-  workflow_dispatch:
+    - cron: '0 3 * * *' # Corre todos os dias às 03:00 UTC
+  workflow_dispatch: # Permite correr o script manualmente se precisares
 
 jobs:
   update-covers:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Permissão de segurança necessária para o bot poder gravar no ficheiro
 
     steps:
       - name: Fazer Checkout do Repositório
         uses: actions/checkout@v4
 
-      - name: Descarregar Capas de Anime
-        run: curl -sL "https://malscraper.azurewebsites.net/covers/anime/Danrc_100/presets/dataimagelinkbefore" > capas_temp.css
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Descarregar Capas de Manga
-        run: curl -sL "https://malscraper.azurewebsites.net/covers/manga/Danrc_100/presets/dataimagelinkbefore" >> capas_temp.css
-
-      - name: Substituir Ficheiro Original
-        run: mv capas_temp.css capas.css
+      - name: Executar script para gerar novas capas
+        run: python generate_css.py
 
       - name: Gravar as Alterações no GitHub
         run: |
