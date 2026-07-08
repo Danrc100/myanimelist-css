@@ -1,0 +1,33 @@
+name: Atualizar Capas do Malscraper
+
+on:
+  schedule:
+    - cron: '0 3 * * *' 
+  workflow_dispatch:
+
+jobs:
+  update-covers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Fazer Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Descarregar Capas de Anime
+        run: curl -sL "https://malscraper.azurewebsites.net/covers/anime/Danrc_100/presets/dataimagelinkbefore" > capas_temp.css
+
+      - name: Descarregar Capas de Manga
+        run: curl -sL "https://malscraper.azurewebsites.net/covers/manga/Danrc_100/presets/dataimagelinkbefore" >> capas_temp.css
+
+      - name: Substituir Ficheiro Original
+        run: mv capas_temp.css capas.css
+
+      - name: Gravar as Alterações no GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add capas.css
+          git commit -m "chore: atualizar capas do malscraper (automático)" || echo "Nenhuma capa nova para atualizar."
+          git push
