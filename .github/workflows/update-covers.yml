@@ -2,14 +2,14 @@ name: Atualizar Capas do Malscraper
 
 on:
   schedule:
-    - cron: '0 3 * * *' # Corre todos os dias às 03:00 UTC
-  workflow_dispatch: # Permite correr o script manualmente se precisares
+    - cron: '0 3 * * *' #
+  workflow_dispatch:
 
 jobs:
   update-covers:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Permissão de segurança necessária para o bot poder gravar no ficheiro
+      contents: write
 
     steps:
       - name: Fazer Checkout do Repositório
