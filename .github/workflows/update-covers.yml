@@ -1,32 +1,32 @@
-name: Atualizar Capas do Malscraper
+name: Update MyAnimeList Covers
 
 on:
   schedule:
-    - cron: '0 3 * * *' #
-  workflow_dispatch:
+    - cron: '0 3 * * *' # Runs everyday at 03:00 UTC
+  workflow_dispatch: # Allows running the script manually
 
 jobs:
   update-covers:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Security permission needed to push to repo
 
     steps:
-      - name: Fazer Checkout do Repositório
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Instalar Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Executar script para gerar novas capas
+      - name: Run script to generate new covers
         run: python generate_css.py
 
-      - name: Gravar as Alterações no GitHub
+      - name: Save Changes to GitHub
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add capas.css
-          git commit -m "chore: atualizar capas do malscraper (automático)" || echo "Nenhuma capa nova para atualizar."
+          git add covers.css
+          git commit -m "chore: update malscraper covers (automated)" || echo "No new covers to update."
           git push
