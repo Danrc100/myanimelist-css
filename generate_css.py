@@ -60,10 +60,10 @@ def generate_css():
             hd_url = get_hd_url(img_url)
             css_lines.append(f'.data.image a[href^="/manga/{manga_id}/"]:before{{background-image:url({hd_url});}}')
             
-    # Write to capas.css
-    with open("capas.css", "w", encoding="utf-8") as f:
+    # Write to covers.css
+    with open("covers.css", "w", encoding="utf-8") as f:
         f.write("\n".join(css_lines))
-    print(f"Successfully generated capas.css with {len(css_lines)} rules.")
+    print(f"Successfully generated covers.css with {len(css_lines)} rules.")
 
 if __name__ == "__main__":
     generate_css()
